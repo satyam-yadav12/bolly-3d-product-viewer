@@ -1,12 +1,10 @@
 /**
- * Bolly – interactive 3D product viewer
- * Loads a .glb bottle model and lets the visitor rotate it with the
- * cursor (desktop) or touch gestures (mobile). Enqueue this file as a
- * module from functions.php (see functions-snippet.php).
+ * bottle-viewer.js
  *
- * Until a real model is supplied, any container that fails to load
- * BOLLY_MODEL_URL falls back to a procedural placeholder bottle so the
- * section never renders empty/broken.
+ * Simple Three.js hero viewer for the Bolly landing page.
+ * Loads a .glb model from the page, or displays a fallback bottle when
+ * the model cannot be loaded. The viewer supports drag/swipe rotation
+ * with OrbitControls and resizes automatically with the page.
  */
 import * as THREE from "https://esm.sh/three@0.153.0";
 import { OrbitControls } from "https://esm.sh/three@0.153.0/examples/jsm/controls/OrbitControls.js";
@@ -22,10 +20,11 @@ class BottleViewer {
   }
 
   init() {
-    const { clientWidth: w, clientHeight: h } = this.container;
+    const w = this.container.clientWidth;
+    const h = this.container.clientHeight;
+    if (!w || !h) return;
 
     this.scene = new THREE.Scene();
-
     this.camera = new THREE.PerspectiveCamera(35, w / h, 0.1, 100);
     this.camera.position.set(0, 0.15, 3.2);
 
@@ -45,19 +44,14 @@ class BottleViewer {
   }
 
   addLights() {
-    this.scene.add(new THREE.HemisphereLight(0xffffff, 0x3a2c66, 1.1));
-
+    const sky = new THREE.HemisphereLight(0xffffff, 0x3a2c66, 1.1);
     const key = new THREE.DirectionalLight(0xffffff, 1.4);
     key.position.set(2.5, 3, 2);
-    this.scene.add(key);
-
     const rim = new THREE.DirectionalLight(0xb9a7ff, 1.2);
     rim.position.set(-3, 1.5, -2);
-    this.scene.add(rim);
-
     const fill = new THREE.DirectionalLight(0xffffff, 0.4);
     fill.position.set(0, -2, 2);
-    this.scene.add(fill);
+    this.scene.add(sky, key, rim, fill);
   }
 
   addControls() {
@@ -70,14 +64,10 @@ class BottleViewer {
     this.controls.maxPolarAngle = Math.PI / 1.7;
     this.controls.autoRotate = true;
     this.controls.autoRotateSpeed = 1.2;
-    // One-finger drag rotates on touch devices; two-finger is a no-op
-    // since zoom/pan are disabled, which keeps pinch gestures from
-    // fighting the page scroll.
     this.controls.touches = {
       ONE: THREE.TOUCH.ROTATE,
       TWO: THREE.TOUCH.ROTATE,
     };
-    // Any user-driven interaction stops the idle auto-rotate.
     this.controls.addEventListener("start", () => {
       this.controls.autoRotate = false;
     });
@@ -93,32 +83,28 @@ class BottleViewer {
         this.scene.add(this.model);
         this.container.classList.remove("is-loading");
       },
-      undefined,
-      (error) => {
-        console.warn("[bolly] Could not load bottle model, showing placeholder:", error);
+      null,
+      () => {
         this.model = this.createPlaceholder();
         this.scene.add(this.model);
         this.container.classList.remove("is-loading");
         this.container.classList.add("is-placeholder");
-      }
+      },
     );
   }
 
-  /** Centers and normalizes an arbitrary model so any real .glb frames consistently. */
   frameModel(model) {
-    const box = new THREE.Box3().setFromObject(model);
-    const size = box.getSize(new THREE.Vector3());
-    const center = box.getCenter(new THREE.Vector3());
+    const bounds = new THREE.Box3().setFromObject(model);
+    const size = bounds.getSize(new THREE.Vector3());
+    const center = bounds.getCenter(new THREE.Vector3());
     const maxDim = Math.max(size.x, size.y, size.z) || 1;
-    const scale = 1.6 / maxDim;
+    const scale = 1.8 / maxDim;
     model.scale.setScalar(scale);
     model.position.sub(center.multiplyScalar(scale));
   }
 
-  /** Stand-in bottle (body + cap + pump) shown until a real model is wired up. */
   createPlaceholder() {
     const group = new THREE.Group();
-
     const bodyMat = new THREE.MeshPhysicalMaterial({
       color: 0x5b3fe0,
       roughness: 0.35,
@@ -126,20 +112,35 @@ class BottleViewer {
       clearcoat: 0.4,
       clearcoatRoughness: 0.25,
     });
-    const body = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.6, 1.5, 48), bodyMat);
+    const body = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.55, 0.6, 1.5, 48),
+      bodyMat,
+    );
     group.add(body);
 
-    const capMat = new THREE.MeshPhysicalMaterial({ color: 0xe8e6f5, roughness: 0.45 });
-    const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.24, 0.35, 32), capMat);
+    const capMat = new THREE.MeshPhysicalMaterial({
+      color: 0xe8e6f5,
+      roughness: 0.45,
+    });
+    const cap = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.22, 0.24, 0.35, 32),
+      capMat,
+    );
     cap.position.y = 0.92;
     group.add(cap);
 
-    const nozzle = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.4, 16), capMat);
+    const nozzle = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.06, 0.06, 0.4, 16),
+      capMat,
+    );
     nozzle.position.set(0, 1.15, 0.18);
     nozzle.rotation.x = Math.PI / 2.4;
     group.add(nozzle);
 
-    const pumpArm = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.12, 0.5), capMat);
+    const pumpArm = new THREE.Mesh(
+      new THREE.BoxGeometry(0.16, 0.12, 0.5),
+      capMat,
+    );
     pumpArm.position.set(0, 1.28, 0.05);
     group.add(pumpArm);
 
@@ -147,12 +148,13 @@ class BottleViewer {
   }
 
   observeResize() {
-    this.resizeObserver = new ResizeObserver(() => this.onResize());
-    this.resizeObserver.observe(this.container);
+    const observer = new ResizeObserver(() => this.onResize());
+    observer.observe(this.container);
   }
 
   onResize() {
-    const { clientWidth: w, clientHeight: h } = this.container;
+    const w = this.container.clientWidth;
+    const h = this.container.clientHeight;
     if (!w || !h) return;
     this.camera.aspect = w / h;
     this.camera.updateProjectionMatrix();

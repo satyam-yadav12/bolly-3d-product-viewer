@@ -1,9 +1,5 @@
 <?php
-/**
- * Hero section markup, included (via output buffering) by the
- * [bolly_hero] shortcode in functions-snippet.php. $atts is in scope
- * from the calling function — do not access this file directly.
- */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
