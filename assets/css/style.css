@@ -1,0 +1,358 @@
+/*
+ * Bolly hero section styles.
+ * Enqueue via functions.php (see functions-snippet.php) rather than
+ * pasting into Elementor's "Custom CSS" box, so it's cacheable and
+ * versioned like a normal stylesheet.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Archivo+Black&family=Poppins:ital,wght@0,500;0,600;0,700;1,700&family=Playfair+Display:ital@1&display=swap");
+
+.bolly-hero {
+  --bolly-purple: #5b3fe0;
+  --bolly-purple-dark: #2a1b6b;
+  --bolly-lime: #d6f23c;
+  --bolly-ink: #111111;
+  --bolly-page-bg: #e7e7e5;
+  --bolly-card-bg: #f4f3f1;
+  --bolly-radius: clamp(20px, 3vw, 40px);
+
+  box-sizing: border-box;
+  width: 100%;
+  padding: clamp(16px, 3vw, 40px);
+  background: var(--bolly-page-bg);
+}
+
+.bolly-hero *,
+.bolly-hero *::before,
+.bolly-hero *::after {
+  box-sizing: border-box;
+}
+
+.bolly-hero__card {
+  position: relative;
+  max-width: 1440px;
+  margin: 0 auto;
+  background-color: var(--bolly-card-bg);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  border-radius: var(--bolly-radius);
+  overflow: hidden;
+  padding: clamp(20px, 2.5vw, 36px) clamp(20px, 4vw, 56px) clamp(40px, 6vw, 72px);
+}
+
+/* ---------- Header ---------- */
+
+.bolly-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.bolly-logo {
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+  font-size: clamp(22px, 2.5vw, 30px);
+  color: var(--bolly-ink);
+  text-decoration: none;
+  letter-spacing: -0.02em;
+}
+
+.bolly-nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 2vw, 26px);
+  background: var(--bolly-purple);
+  border-radius: 999px;
+  padding: 8px 10px 8px clamp(16px, 2vw, 24px);
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.bolly-nav a {
+  color: #ffffff;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.bolly-nav__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--bolly-ink);
+  color: #fff;
+  border-radius: 999px;
+  padding: 8px 18px;
+}
+
+.bolly-nav__pill .plus {
+  font-weight: 400;
+}
+
+.bolly-cart {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--bolly-ink);
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.bolly-cart__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: var(--bolly-lime);
+  color: var(--bolly-ink);
+}
+
+/* ---------- Hero body ---------- */
+
+.bolly-hero__body {
+  display: grid;
+  grid-template-columns: 1fr minmax(260px, 34%) 1fr;
+  align-items: center;
+  gap: clamp(16px, 3vw, 32px);
+  margin-top: clamp(24px, 5vw, 48px);
+}
+
+.bolly-hero__left {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 2.5vw, 26px);
+}
+
+.bolly-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  color: var(--bolly-ink);
+  width: fit-content;
+}
+
+.bolly-badge em {
+  font-style: normal;
+  background: var(--bolly-purple);
+  color: #fff;
+  border-radius: 999px;
+  padding: 6px 14px;
+}
+
+.bolly-headline {
+  font-family: "Archivo Black", sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: var(--bolly-ink);
+  font-size: clamp(40px, 7vw, 88px);
+  line-height: 0.92;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.bolly-hero__center {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1 / 1;
+  width: 100%;
+}
+
+.bolly-viewer-glow {
+  position: absolute;
+  inset: 8%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(216, 204, 247, 0.9) 0%, rgba(216, 204, 247, 0.35) 55%, rgba(216, 204, 247, 0) 75%);
+  z-index: 0;
+}
+
+.bolly-viewer {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  touch-action: none; /* let OrbitControls own drag/pinch gestures */
+  cursor: grab;
+}
+
+.bolly-viewer:active {
+  cursor: grabbing;
+}
+
+.bolly-viewer canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.bolly-viewer.is-loading::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 36px;
+  height: 36px;
+  margin: -18px 0 0 -18px;
+  border-radius: 50%;
+  border: 3px solid rgba(91, 63, 224, 0.25);
+  border-top-color: var(--bolly-purple);
+  animation: bolly-spin 0.8s linear infinite;
+}
+
+@keyframes bolly-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.bolly-hero__right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(18px, 2.5vw, 28px);
+  justify-self: end;
+  text-align: left;
+  max-width: 280px;
+}
+
+.bolly-tagline {
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-size: clamp(18px, 1.8vw, 24px);
+  line-height: 1.3;
+  color: var(--bolly-ink);
+  margin: 0;
+}
+
+.bolly-tagline em {
+  font-family: "Playfair Display", serif;
+  font-style: italic;
+  font-weight: 400;
+}
+
+.bolly-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  text-decoration: none;
+}
+
+.bolly-cta span:first-child {
+  background: var(--bolly-ink);
+  color: #fff;
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  border-radius: 999px 0 0 999px;
+  padding: 16px 22px 16px 26px;
+}
+
+.bolly-cta__arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-left: -2px;
+  border-radius: 50%;
+  background: var(--bolly-purple);
+  color: #fff;
+}
+
+/* ---------- Tablet ---------- */
+
+@media (max-width: 1024px) {
+  .bolly-hero__body {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .bolly-hero__left,
+  .bolly-hero__right {
+    align-items: center;
+    max-width: 480px;
+  }
+
+  .bolly-hero__right {
+    justify-self: center;
+  }
+
+  .bolly-hero__center {
+    max-width: 420px;
+    order: -1;
+  }
+
+  .bolly-badge {
+    justify-content: center;
+  }
+}
+
+/* ---------- Mobile ---------- */
+
+@media (max-width: 640px) {
+  .bolly-header {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .bolly-nav {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
+
+  .bolly-headline {
+    font-size: clamp(36px, 13vw, 56px);
+  }
+
+  .bolly-hero__center {
+    max-width: 300px;
+  }
+}
+
+/* ---------- Down to 320px ---------- */
+
+@media (max-width: 360px) {
+  .bolly-hero {
+    padding: 10px;
+  }
+
+  .bolly-hero__card {
+    padding: 16px 14px 32px;
+    border-radius: 20px;
+  }
+
+  .bolly-nav {
+    gap: 10px;
+    padding: 8px 8px 8px 14px;
+    font-size: 12px;
+  }
+
+  .bolly-nav__pill {
+    padding: 6px 12px;
+  }
+
+  .bolly-headline {
+    font-size: 34px;
+  }
+
+  .bolly-cta span:first-child {
+    padding: 14px 16px 14px 20px;
+    font-size: 11px;
+  }
+}
