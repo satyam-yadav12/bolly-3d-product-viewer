@@ -1,4 +1,4 @@
-# Bolly Landing 3D Page
+# bolly-3d-product-viewer
 
 A WordPress hero section featuring an interactive 3D shampoo bottle, built to integrate easily with Elementor.
 
@@ -13,9 +13,9 @@ A WordPress hero section featuring an interactive 3D shampoo bottle, built to in
 
 1. Copy the plugin folder to:
    ```
-   wp-content/plugins/bolly-landing-3d-page
+   wp-content/plugins/bolly-3d-product-viewer
    ```
-2. Add a page for in wordpress dashboard
+2. Add a page in wordpress dashboard
 3. Insert the shortcode into an Elementor **Shortcode** widget:
    ```
    [bolly_hero]
@@ -32,7 +32,6 @@ assets/
 ├── models/
 │   └── bolly-bottle.glb
 bolly landing page.php
-
 template-parts/
 └── hero.php
 ```
