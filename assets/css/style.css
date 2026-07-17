@@ -264,9 +264,11 @@
   justify-content: center;
   width: 44px;
   height: 44px;
-  margin: 2px;
+  padding-left: 2px;
+  padding-right: 2px;
   border-radius: 50%;
   background: var(--bolly-purple);
+
   color: #fff;
 }
 
